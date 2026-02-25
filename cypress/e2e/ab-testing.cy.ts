@@ -7,7 +7,7 @@ describe('A/B Testing', () => {
     cy.contains('h3', /A\/B Test/)
   })
 
-  it('negative — only one heading present', () => {
+  it('happy path — exactly one heading is present', () => {
     cy.get('h3').should('have.length', 1)
   })
 })
