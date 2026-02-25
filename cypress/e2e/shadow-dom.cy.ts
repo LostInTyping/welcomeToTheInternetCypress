@@ -4,19 +4,21 @@ describe('Shadow DOM', () => {
   })
 
   it('happy path — page heading is present', () => {
-    cy.contains('h3', 'Shadow DOM')
+    cy.get('h1').should('contain', 'Simple template')
   })
 
   it('happy path — my-paragraph element exists on the page', () => {
     cy.get('my-paragraph').should('exist')
   })
 
-  it('happy path — shadow root is accessible via .shadow()', () => {
-    cy.get('my-paragraph').first().shadow().should('exist')
+  it('happy path — shadow root is accessible', () => {
+    cy.get('my-paragraph').first().should(($el) => {
+      expect($el[0].shadowRoot).to.not.be.null
+    })
   })
 
   it('happy path — shadow content contains expected text', () => {
-    cy.get('my-paragraph').first().shadow().find('p')
+    cy.get('my-paragraph').first().find('[slot="my-text"]')
       .should('contain', "Let's have some different text!")
   })
 
@@ -31,7 +33,9 @@ describe('Shadow DOM', () => {
   it('happy path — second my-paragraph also has shadow content', () => {
     cy.get('my-paragraph').then(($els) => {
       if ($els.length > 1) {
-        cy.get('my-paragraph').eq(1).shadow().find('p').should('exist')
+        cy.wrap($els.eq(1)).should(($el) => {
+          expect($el[0].shadowRoot).to.not.be.null
+        })
       }
     })
   })

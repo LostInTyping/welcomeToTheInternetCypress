@@ -8,7 +8,7 @@ describe('Status Codes', () => {
   })
 
   it('happy path — links for 200, 301, 404, 500 all exist', () => {
-    cy.get('.example a').should('have.length', 4)
+    cy.get('.example ul a').should('have.length', 4)
   })
 
   it('happy path — each link has expected text content', () => {

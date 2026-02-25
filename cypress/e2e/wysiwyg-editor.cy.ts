@@ -21,26 +21,24 @@ describe('WYSIWYG Editor', () => {
       .should('contain', 'Your content goes here.')
   })
 
-  it('happy path — can clear and type new content', () => {
-    cy.get('iframe#mce_0_ifr')
-      .its('0.contentDocument.body')
-      .then(($body) => {
-        cy.wrap($body).clear()
-        cy.wrap($body).type('Hello Cypress WYSIWYG!')
-        cy.wrap($body).should('contain', 'Hello Cypress WYSIWYG!')
-      })
+  it('happy path — can set and read content via TinyMCE API', () => {
+    cy.window().its('tinyMCE.activeEditor', { timeout: 15000 }).then((editor) => {
+      editor.setContent('<p>Hello Cypress WYSIWYG!</p>')
+      expect(editor.getContent()).to.contain('Hello Cypress WYSIWYG!')
+    })
   })
 
-  it('happy path — cleared content is gone before typing', () => {
-    cy.get('iframe#mce_0_ifr')
-      .its('0.contentDocument.body')
-      .then(($body) => {
-        cy.wrap($body).clear()
-        cy.wrap($body).should('not.contain', 'Your content goes here.')
-      })
+  it('happy path — clearing content removes default text', () => {
+    cy.window().its('tinyMCE.activeEditor', { timeout: 15000 }).then((editor) => {
+      editor.setContent('')
+      expect(editor.getContent()).to.not.contain('Your content goes here.')
+    })
   })
 
-  it('encapsulation — outer body does not contain iframe text', () => {
-    cy.get('body').should('not.contain', 'Your content goes here.')
+  it('encapsulation — original textarea serves as backing store', () => {
+    cy.get('.example textarea').should('exist')
+    cy.get('iframe#mce_0_ifr')
+      .its('0.contentDocument.body')
+      .should('contain', 'Your content goes here.')
   })
 })

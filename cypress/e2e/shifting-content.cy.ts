@@ -31,15 +31,14 @@ describe('Shifting Content', () => {
     cy.get('.example img').should('be.visible')
   })
 
-  it('happy path — Example 3: list renders with expected items', () => {
+  it('happy path — Example 3: page renders with content items', () => {
     cy.visit('/shifting_content/list')
-    cy.get('.example li').should('have.length.greaterThan', 0)
+    cy.get('.example .large-6').should('exist')
+    cy.get('.example .large-6').invoke('text').invoke('trim').should('not.be.empty')
   })
 
-  it('happy path — Example 3: list items have visible text', () => {
+  it('happy path — Example 3: content includes expected static item', () => {
     cy.visit('/shifting_content/list')
-    cy.get('.example li').each(($li) => {
-      cy.wrap($li).invoke('text').invoke('trim').should('not.be.empty')
-    })
+    cy.get('.example .large-6').should('contain', "Important Information You're Looking For")
   })
 })

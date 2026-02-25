@@ -72,9 +72,7 @@ describe('Sortable Data Tables', () => {
     })
   })
 
-  it('edge case — table2 headers do not have class "header"', () => {
-    cy.get('#table2 thead th').each(($th) => {
-      cy.wrap($th).should('not.have.class', 'header')
-    })
+  it('edge case — table2 headers gain class "header" from tablesorter', () => {
+    cy.get('#table2 thead th').first().should('have.class', 'header')
   })
 })

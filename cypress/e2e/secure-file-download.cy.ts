@@ -37,8 +37,9 @@ describe('Secure File Download', () => {
     cy.visit('https://admin:admin@the-internet.herokuapp.com/download_secure')
     cy.get('.example a').first().then(($a) => {
       const href = $a.attr('href')
+      const url = href!.startsWith('/') ? href : `/${href}`
       cy.request({
-        url: `https://the-internet.herokuapp.com${href}`,
+        url: `https://the-internet.herokuapp.com${url}`,
         auth: { username: 'admin', password: 'admin' },
       }).its('status').should('eq', 200)
     })
