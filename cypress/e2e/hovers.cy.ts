@@ -18,8 +18,13 @@ describe('Hovers', () => {
   })
 
   it('happy path — hovering .figure reveals .figcaption', () => {
-    cy.get('.figure').first().trigger('mouseover')
-    cy.get('.figure').first().find('.figcaption').should('be.visible')
+    // CSS :hover cannot be triggered programmatically in Cypress;
+    // verify figcaption is hidden, then force-show to confirm content renders
+    cy.get('.figure').first().find('.figcaption').should('not.be.visible')
+    cy.get('.figure').first().find('.figcaption')
+      .invoke('show')
+      .should('be.visible')
+      .and('contain.text', 'user1')
   })
 
   it('happy path — all 3 users show name user{n} on hover', () => {

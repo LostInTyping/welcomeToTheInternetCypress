@@ -21,7 +21,7 @@ describe('Key Presses', () => {
   })
 
   it('happy path — pressing ENTER shows "You entered: ENTER"', () => {
-    cy.get('#target').type('{enter}')
+    cy.get('#target').trigger('keydown', { key: 'Enter', keyCode: 13 })
     cy.get('#result').should('have.text', 'You entered: ENTER')
   })
 

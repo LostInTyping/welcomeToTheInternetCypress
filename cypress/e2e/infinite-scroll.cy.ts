@@ -12,46 +12,36 @@ describe('Infinite Scroll', () => {
   })
 
   it('happy path — scrolling to bottom loads more paragraphs', () => {
-    let initialCount: number
-
-    cy.get('.jscroll-inner .jscroll-added').its('length').then((count) => {
-      initialCount = count
+    cy.get('.jscroll-inner .jscroll-added').its('length').then((initialCount) => {
+      cy.scrollTo('bottom')
+      cy.wait(2000)
+      cy.get('.jscroll-inner .jscroll-added').should('have.length.greaterThan', initialCount)
     })
-
-    cy.get('.jscroll-inner .jscroll-added').last().scrollIntoView()
-    cy.wait(2000)
-
-    cy.get('.jscroll-inner .jscroll-added').should('have.length.greaterThan', initialCount)
   })
 
   it('happy path — new content is appended, not replaced', () => {
-    let initialCount: number
-
-    cy.get('.jscroll-inner .jscroll-added').its('length').then((count) => {
-      initialCount = count
+    // Mark all initial elements so we can verify they persist after scroll
+    cy.get('.jscroll-inner .jscroll-added').each(($el) => {
+      $el.attr('data-initial', 'true')
     })
 
-    cy.get('.jscroll-inner .jscroll-added').last().scrollIntoView()
+    cy.scrollTo('bottom')
     cy.wait(2000)
 
-    cy.get('.jscroll-inner .jscroll-added').its('length').then((newCount) => {
-      expect(newCount).to.be.greaterThan(initialCount)
-    })
+    // Original marked elements should still be in the DOM
+    cy.get('.jscroll-inner .jscroll-added[data-initial="true"]').should('have.length.greaterThan', 0)
+    // New elements without the marker should also exist
+    cy.get('.jscroll-inner .jscroll-added:not([data-initial])').should('have.length.greaterThan', 0)
   })
 
   it('happy path — second scroll loads even more content', () => {
-    let countAfterFirstScroll: number
-
-    cy.get('.jscroll-inner .jscroll-added').last().scrollIntoView()
+    cy.scrollTo('bottom')
     cy.wait(2000)
 
-    cy.get('.jscroll-inner .jscroll-added').its('length').then((count) => {
-      countAfterFirstScroll = count
+    cy.get('.jscroll-inner .jscroll-added').its('length').then((countAfterFirst) => {
+      cy.scrollTo('bottom')
+      cy.wait(2000)
+      cy.get('.jscroll-inner .jscroll-added').should('have.length.greaterThan', countAfterFirst)
     })
-
-    cy.get('.jscroll-inner .jscroll-added').last().scrollIntoView()
-    cy.wait(2000)
-
-    cy.get('.jscroll-inner .jscroll-added').should('have.length.greaterThan', countAfterFirstScroll)
   })
 })
