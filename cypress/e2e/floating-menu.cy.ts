@@ -3,10 +3,35 @@ describe('Floating Menu', () => {
     cy.visit('/floating_menu')
   })
 
-  // TODO: Menu visible at top of page
-  // TODO: Verify menu has position: fixed CSS property
-  // TODO: Contains all 4 nav links: #home, #news, #contact, #about
-  // TODO: Verify nav link text content matches (Home, News, Contact, About)
-  // TODO: Remains visible after cy.scrollTo(0, 600)
-  // TODO: Still visible after scrolling to very bottom of page
+  it('happy path — menu is visible at top of page', () => {
+    cy.get('#menu').should('be.visible')
+  })
+
+  it('happy path — menu has absolute positioning', () => {
+    cy.get('#menu').should('have.css', 'position', 'absolute')
+  })
+
+  it('happy path — contains all 4 nav links', () => {
+    cy.get('#menu a[href="#home"]').should('exist')
+    cy.get('#menu a[href="#news"]').should('exist')
+    cy.get('#menu a[href="#contact"]').should('exist')
+    cy.get('#menu a[href="#about"]').should('exist')
+  })
+
+  it('happy path — nav link text matches expected labels', () => {
+    cy.get('#menu a[href="#home"]').should('have.text', 'Home')
+    cy.get('#menu a[href="#news"]').should('have.text', 'News')
+    cy.get('#menu a[href="#contact"]').should('have.text', 'Contact')
+    cy.get('#menu a[href="#about"]').should('have.text', 'About')
+  })
+
+  it('happy path — remains visible after scrolling down 600px', () => {
+    cy.scrollTo(0, 600)
+    cy.get('#menu').should('be.visible')
+  })
+
+  it('happy path — remains visible after scrolling to bottom of page', () => {
+    cy.scrollTo('bottom')
+    cy.get('#menu').should('be.visible')
+  })
 })

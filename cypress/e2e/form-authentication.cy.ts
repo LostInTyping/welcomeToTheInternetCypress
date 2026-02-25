@@ -3,13 +3,65 @@ describe('Form Authentication', () => {
     cy.visit('/login')
   })
 
-  // TODO: Verify login page structure: username, password, Login button
-  // TODO: Valid login (tomsmith / SuperSecretPassword!) → /secure with flash
-  // TODO: Verify /secure page heading ("Secure Area")
-  // TODO: Use cy.login() custom command for at least one test
-  // TODO: Flash close button (X) dismisses the flash message
-  // TODO: Logout navigates back to /login
-  // TODO: Invalid username shows error flash
-  // TODO: Invalid password shows error flash
-  // TODO: Empty username and password shows error flash
+  it('happy path — login page has username, password, and Login button', () => {
+    cy.get('#username').should('be.visible')
+    cy.get('#password').should('be.visible')
+    cy.get('button[type="submit"]').should('be.visible')
+  })
+
+  it('happy path — valid login redirects to /secure with success flash', () => {
+    cy.get('#username').type('tomsmith')
+    cy.get('#password').type('SuperSecretPassword!')
+    cy.get('button[type="submit"]').click()
+    cy.url().should('include', '/secure')
+    cy.get('#flash').should('contain.text', 'You logged into a secure area!')
+  })
+
+  it('happy path — /secure page heading says Secure Area', () => {
+    cy.get('#username').type('tomsmith')
+    cy.get('#password').type('SuperSecretPassword!')
+    cy.get('button[type="submit"]').click()
+    cy.get('h2').should('contain.text', 'Secure Area')
+  })
+
+  it('happy path — cy.login() custom command logs in successfully', () => {
+    cy.login('tomsmith', 'SuperSecretPassword!')
+    cy.url().should('include', '/secure')
+    cy.get('#flash').should('contain.text', 'You logged into a secure area!')
+  })
+
+  it('happy path — flash close button dismisses the message', () => {
+    cy.get('#username').type('tomsmith')
+    cy.get('#password').type('SuperSecretPassword!')
+    cy.get('button[type="submit"]').click()
+    cy.get('#flash').should('be.visible')
+    cy.get('#flash .close').click({ force: true })
+    cy.get('#flash').should('not.exist')
+  })
+
+  it('happy path — logout navigates back to /login', () => {
+    cy.login('tomsmith', 'SuperSecretPassword!')
+    cy.get('a[href="/logout"]').click()
+    cy.url().should('include', '/login')
+    cy.get('#flash').should('contain.text', 'You logged out of the secure area!')
+  })
+
+  it('negative — invalid username shows error flash', () => {
+    cy.get('#username').type('invaliduser')
+    cy.get('#password').type('SuperSecretPassword!')
+    cy.get('button[type="submit"]').click()
+    cy.get('#flash').should('contain.text', 'Your username is invalid!')
+  })
+
+  it('negative — invalid password shows error flash', () => {
+    cy.get('#username').type('tomsmith')
+    cy.get('#password').type('wrongpassword')
+    cy.get('button[type="submit"]').click()
+    cy.get('#flash').should('contain.text', 'Your password is invalid!')
+  })
+
+  it('negative — empty username and password shows error flash', () => {
+    cy.get('button[type="submit"]').click()
+    cy.get('#flash').should('contain.text', 'Your username is invalid!')
+  })
 })
