@@ -3,8 +3,16 @@ describe('Slow Resources', () => {
     cy.visit('/slow', { timeout: 30000 })
   })
 
-  // TODO: Verify page heading "Slow Resources"
-  // TODO: Body and h3 both visible after load
-  // TODO: Page content area (.example) exists
-  // Note: Page can take 10-30s to load
+  it('happy path — page heading is present', () => {
+    cy.contains('h3', 'Slow Resources')
+  })
+
+  it('happy path — body and h3 both visible after load', () => {
+    cy.get('body').should('be.visible')
+    cy.get('h3').should('be.visible')
+  })
+
+  it('happy path — page content area exists', () => {
+    cy.get('.example').should('exist')
+  })
 })
