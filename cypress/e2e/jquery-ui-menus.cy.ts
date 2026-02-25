@@ -4,7 +4,7 @@ describe('jQuery UI Menus', () => {
   })
 
   it('happy path — page heading is visible', () => {
-    cy.get('h3').should('have.text', 'JQuery UI - Menu')
+    cy.get('h3').should('have.text', 'JQueryUI - Menu')
   })
 
   it('happy path — #menu is visible', () => {
