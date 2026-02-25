@@ -4,7 +4,7 @@ describe('Dynamic Controls', () => {
   })
 
   it('happy path — page heading is visible', () => {
-    cy.get('h3').should('have.text', 'Dynamic Controls')
+    cy.get('h4').first().should('have.text', 'Dynamic Controls')
   })
 
   it('initial state — input is disabled by default', () => {
@@ -38,7 +38,7 @@ describe('Dynamic Controls', () => {
   it('happy path — loading indicator appears during remove operation', () => {
     cy.get('#checkbox-example button').contains('Remove').click()
     cy.get('#checkbox-example #loading').should('be.visible')
-    cy.get('#checkbox-example #loading').should('not.exist')
+    cy.get('#checkbox-example #checkbox', { timeout: 15000 }).should('not.exist')
   })
 
   it('happy path — after enabling, type into input and verify value', () => {

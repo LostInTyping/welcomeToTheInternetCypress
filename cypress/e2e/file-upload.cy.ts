@@ -43,6 +43,6 @@ describe('File Upload', () => {
 
   it('negative — submitting without a file does not show success message', () => {
     cy.get('#file-submit').click()
-    cy.get('h3').should('not.have.text', 'File Uploaded!')
+    cy.contains('File Uploaded!').should('not.exist')
   })
 })

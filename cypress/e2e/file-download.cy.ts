@@ -19,13 +19,13 @@ describe('File Download', () => {
 
   it('happy path — first link returns HTTP 200 via cy.request', () => {
     cy.get('.example a').first().invoke('attr', 'href').then((href) => {
-      cy.request(Cypress.config('baseUrl') + href).its('status').should('eq', 200)
+      cy.request('/' + href).its('status').should('eq', 200)
     })
   })
 
   it('happy path — first link response has a Content-Type header', () => {
     cy.get('.example a').first().invoke('attr', 'href').then((href) => {
-      cy.request(Cypress.config('baseUrl') + href).its('headers').should('have.property', 'content-type')
+      cy.request('/' + href).its('headers').should('have.property', 'content-type')
     })
   })
 })
