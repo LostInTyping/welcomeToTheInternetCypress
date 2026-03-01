@@ -3,24 +3,24 @@ describe('Redirect Link', () => {
     cy.visit('/redirector')
   })
 
-  it('happy path — page heading is visible', () => {
+  it('happy path ⋙ page heading is visible', () => {
     cy.get('h3').should('have.text', 'Redirection')
   })
 
-  it('happy path — redirect link exists with text "here"', () => {
+  it('happy path ⋙ redirect link exists with text "here"', () => {
     cy.get('a#redirect').should('have.text', 'here')
   })
 
-  it('happy path — link href points to expected redirect path', () => {
+  it('happy path ⋙ link href points to expected redirect path', () => {
     cy.get('a#redirect').should('have.attr', 'href', 'redirect')
   })
 
-  it('happy path — clicking link navigates to /status_codes', () => {
+  it('happy path ⋙ clicking link navigates to /status_codes', () => {
     cy.get('a#redirect').click()
     cy.url().should('include', '/status_codes')
   })
 
-  it('happy path — /status_codes page has expected content', () => {
+  it('happy path ⋙ /status_codes page has expected content', () => {
     cy.get('a#redirect').click()
     cy.get('h3').should('have.text', 'Status Codes')
     cy.get('.example').should('contain.text', '200')
@@ -29,7 +29,7 @@ describe('Redirect Link', () => {
     cy.get('.example').should('contain.text', '500')
   })
 
-  it('edge case — cy.request follows redirect to /status_codes', () => {
+  it('edge case ⋙ cy.request follows redirect to /status_codes', () => {
     cy.request({
       url: '/redirect',
       followRedirect: false,

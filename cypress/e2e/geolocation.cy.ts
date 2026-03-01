@@ -1,15 +1,15 @@
 describe('Geolocation', () => {
-  it('happy path — page heading is present', () => {
+  it('happy path ⋙ page heading is present', () => {
     cy.visit('/geolocation')
     cy.contains('h3', 'Geolocation')
   })
 
-  it('happy path — Where am I? button is visible', () => {
+  it('happy path ⋙ Where am I? button is visible', () => {
     cy.visit('/geolocation')
     cy.contains('button', 'Where am I?').should('be.visible')
   })
 
-  it('happy path — clicking button with stubbed position shows coordinates', () => {
+  it('happy path ⋙ clicking button with stubbed position shows coordinates', () => {
     cy.visit('/geolocation', {
       onBeforeLoad(win) {
         cy.stub(win.navigator.geolocation, 'getCurrentPosition').callsFake((cb) => {
@@ -22,7 +22,7 @@ describe('Geolocation', () => {
     cy.get('#long-value').should('not.be.empty')
   })
 
-  it('happy path — stubbed coordinates appear in the display', () => {
+  it('happy path ⋙ stubbed coordinates appear in the display', () => {
     cy.visit('/geolocation', {
       onBeforeLoad(win) {
         cy.stub(win.navigator.geolocation, 'getCurrentPosition').callsFake((cb) => {
@@ -35,7 +35,7 @@ describe('Geolocation', () => {
     cy.get('#long-value').should('have.text', '-0.1278')
   })
 
-  it('negative — denying permission does not display coordinates', () => {
+  it('negative ⋙ denying permission does not display coordinates', () => {
     cy.visit('/geolocation', {
       onBeforeLoad(win) {
         cy.stub(win.navigator.geolocation, 'getCurrentPosition').callsFake((_cb, err) => {

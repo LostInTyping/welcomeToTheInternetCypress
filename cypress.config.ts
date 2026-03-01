@@ -1,6 +1,8 @@
 import { defineConfig } from 'cypress'
 
 export default defineConfig({
+  allowCypressEnv: false,
+  experimentalRunAllSpecs: true,
   e2e: {
     baseUrl: 'https://the-internet.herokuapp.com',
     defaultCommandTimeout: 8000,

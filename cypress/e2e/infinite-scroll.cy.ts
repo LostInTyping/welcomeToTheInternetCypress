@@ -3,15 +3,15 @@ describe('Infinite Scroll', () => {
     cy.visit('/infinite_scroll')
   })
 
-  it('happy path — page heading is visible', () => {
+  it('happy path ⋙ page heading is visible', () => {
     cy.get('h3').should('have.text', 'Infinite Scroll')
   })
 
-  it('happy path — page loads with initial paragraph content', () => {
+  it('happy path ⋙ page loads with initial paragraph content', () => {
     cy.get('.jscroll-inner .jscroll-added').should('have.length.greaterThan', 0)
   })
 
-  it('happy path — scrolling to bottom loads more paragraphs', () => {
+  it('happy path ⋙ scrolling to bottom loads more paragraphs', () => {
     cy.get('.jscroll-inner .jscroll-added').its('length').then((initialCount) => {
       cy.scrollTo('bottom')
       cy.wait(2000)
@@ -19,7 +19,7 @@ describe('Infinite Scroll', () => {
     })
   })
 
-  it('happy path — new content is appended, not replaced', () => {
+  it('happy path ⋙ new content is appended, not replaced', () => {
     // Mark all initial elements so we can verify they persist after scroll
     cy.get('.jscroll-inner .jscroll-added').each(($el) => {
       $el.attr('data-initial', 'true')
@@ -34,7 +34,7 @@ describe('Infinite Scroll', () => {
     cy.get('.jscroll-inner .jscroll-added:not([data-initial])').should('have.length.greaterThan', 0)
   })
 
-  it('happy path — second scroll loads even more content', () => {
+  it('happy path ⋙ second scroll loads even more content', () => {
     cy.scrollTo('bottom')
     cy.wait(2000)
 

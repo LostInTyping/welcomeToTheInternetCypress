@@ -3,19 +3,19 @@ describe('File Upload', () => {
     cy.visit('/upload')
   })
 
-  it('happy path — page heading is visible', () => {
+  it('happy path ⋙ page heading is visible', () => {
     cy.get('h3').should('have.text', 'File Uploader')
   })
 
-  it('initial state — file input exists with type="file"', () => {
+  it('initial state ⋙ file input exists with type="file"', () => {
     cy.get('#file-upload').should('exist').and('have.attr', 'type', 'file')
   })
 
-  it('initial state — drag-drop upload area exists', () => {
+  it('initial state ⋙ drag-drop upload area exists', () => {
     cy.get('#drag-drop-upload').should('exist')
   })
 
-  it('happy path — upload file, submit, and verify success message and filename', () => {
+  it('happy path ⋙ upload file, submit, and verify success message and filename', () => {
     const fileName = 'test-upload.txt'
     const fileContent = 'hello world'
 
@@ -29,7 +29,7 @@ describe('File Upload', () => {
     cy.get('#uploaded-files').should('contain.text', fileName)
   })
 
-  it('happy path — uploaded filename matches the selected file', () => {
+  it('happy path ⋙ uploaded filename matches the selected file', () => {
     const fileName = 'sample-data.txt'
 
     cy.get('#file-upload').selectFile({
@@ -41,7 +41,7 @@ describe('File Upload', () => {
     cy.get('#uploaded-files').should('contain.text', fileName)
   })
 
-  it('negative — submitting without a file does not show success message', () => {
+  it('negative ⋙ submitting without a file does not show success message', () => {
     cy.get('#file-submit').click()
     cy.contains('File Uploaded!').should('not.exist')
   })

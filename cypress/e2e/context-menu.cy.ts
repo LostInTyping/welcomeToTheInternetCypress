@@ -3,15 +3,15 @@ describe('Context Menu', () => {
     cy.visit('/context_menu')
   })
 
-  it('happy path — page heading is visible', () => {
+  it('happy path ⋙ page heading is visible', () => {
     cy.get('h3').should('have.text', 'Context Menu')
   })
 
-  it('happy path — hot-spot element is visible', () => {
+  it('happy path ⋙ hot-spot element is visible', () => {
     cy.get('#hot-spot').should('be.visible')
   })
 
-  it('happy path — right-clicking hot-spot triggers alert', () => {
+  it('happy path ⋙ right-clicking hot-spot triggers alert', () => {
     const stub = cy.stub()
     cy.on('window:alert', stub)
     cy.get('#hot-spot').rightclick().then(() => {
@@ -20,7 +20,7 @@ describe('Context Menu', () => {
     })
   })
 
-  it('negative — left-clicking hot-spot does not trigger alert', () => {
+  it('negative ⋙ left-clicking hot-spot does not trigger alert', () => {
     const stub = cy.stub()
     cy.on('window:alert', stub)
     cy.get('#hot-spot').click().then(() => {
@@ -28,7 +28,7 @@ describe('Context Menu', () => {
     })
   })
 
-  it('happy path — page returns to normal state after dismissing alert', () => {
+  it('happy path ⋙ page returns to normal state after dismissing alert', () => {
     cy.on('window:alert', () => true)
     cy.get('#hot-spot').rightclick()
     cy.get('#hot-spot').should('be.visible')

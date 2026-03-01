@@ -3,16 +3,16 @@ describe('Sortable Data Tables', () => {
     cy.visit('/tables')
   })
 
-  it('happy path — page heading is present', () => {
+  it('happy path ⋙ page heading is present', () => {
     cy.contains('h3', 'Data Tables')
   })
 
-  it('happy path — both tables are visible', () => {
+  it('happy path ⋙ both tables are visible', () => {
     cy.get('#table1').should('be.visible')
     cy.get('#table2').should('be.visible')
   })
 
-  it('happy path — table1 has expected column headers', () => {
+  it('happy path ⋙ table1 has expected column headers', () => {
     const expectedHeaders = ['Last Name', 'First Name', 'Email', 'Due', 'Web Site', 'Action']
     cy.get('#table1 thead th').should('have.length', expectedHeaders.length)
     expectedHeaders.forEach((header, i) => {
@@ -20,18 +20,18 @@ describe('Sortable Data Tables', () => {
     })
   })
 
-  it('happy path — each table has data rows', () => {
+  it('happy path ⋙ each table has data rows', () => {
     cy.get('#table1 tbody tr').should('have.length.greaterThan', 0)
     cy.get('#table2 tbody tr').should('have.length.greaterThan', 0)
   })
 
-  it('happy path — table data cells contain non-empty text', () => {
+  it('happy path ⋙ table data cells contain non-empty text', () => {
     cy.get('#table1 tbody tr').first().find('td').each(($td) => {
       cy.wrap($td).invoke('text').invoke('trim').should('not.be.empty')
     })
   })
 
-  it('happy path — edit and delete action links exist in each row', () => {
+  it('happy path ⋙ edit and delete action links exist in each row', () => {
     cy.get('#table1 tbody tr').each(($row) => {
       cy.wrap($row).find('td').last().within(() => {
         cy.contains('a', 'edit').should('exist')
@@ -40,7 +40,7 @@ describe('Sortable Data Tables', () => {
     })
   })
 
-  it('happy path — clicking Last Name header sorts ascending', () => {
+  it('happy path ⋙ clicking Last Name header sorts ascending', () => {
     cy.get('#table1 thead th').contains('Last Name').click()
     cy.get('#table1 tbody tr td:nth-child(1)').then(($cells) => {
       const values = $cells.toArray().map((el) => el.textContent!.trim())
@@ -49,7 +49,7 @@ describe('Sortable Data Tables', () => {
     })
   })
 
-  it('happy path — double-clicking Last Name header sorts descending', () => {
+  it('happy path ⋙ double-clicking Last Name header sorts descending', () => {
     cy.get('#table1 thead th').contains('Last Name').click()
     cy.get('#table1 thead th').contains('Last Name').click()
     cy.get('#table1 tbody tr td:nth-child(1)').then(($cells) => {
@@ -59,7 +59,7 @@ describe('Sortable Data Tables', () => {
     })
   })
 
-  it('happy path — sorting by Email column changes order', () => {
+  it('happy path ⋙ sorting by Email column changes order', () => {
     cy.get('#table1 tbody tr td:nth-child(3)').then(($cells) => {
       const before = $cells.toArray().map((el) => el.textContent!.trim())
 
@@ -72,7 +72,7 @@ describe('Sortable Data Tables', () => {
     })
   })
 
-  it('edge case — table2 headers gain class "header" from tablesorter', () => {
+  it('edge case ⋙ table2 headers gain class "header" from tablesorter', () => {
     cy.get('#table2 thead th').first().should('have.class', 'header')
   })
 })
