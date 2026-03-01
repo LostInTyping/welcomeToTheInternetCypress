@@ -1,0 +1,12 @@
+# Dependencies
+node_modules/
+
+# Cypress artifacts
+cypress/results/
+cypress/screenshots/
+cypress/videos/
+
+# OS
+.DS_Store
+Thumbs.db
+*.stackdump

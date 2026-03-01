@@ -1,0 +1,102 @@
+name: Cypress E2E
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: cypress-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Run Cypress suite
+        uses: cypress-io/github-action@v6
+        with:
+          install: false
+          command: npm run cy:run
+
+      - name: Generate Mochawesome report
+        if: always()
+        run: |
+          if compgen -G "cypress/results/mochawesome*.json" > /dev/null; then
+            npm run report
+          else
+            echo "No Mochawesome JSON files found; skipping report generation."
+          fi
+
+      - name: Upload run artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-artifacts
+          path: |
+            cypress/results/**
+            cypress/screenshots/**
+            cypress/videos/**
+          if-no-files-found: ignore
+
+  e2e-experimental:
+    if: github.event_name == 'workflow_dispatch'
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install WebKit runtime
+        run: npm i --no-save playwright-webkit
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Run Cypress experimental profile (Chrome)
+        uses: cypress-io/github-action@v6
+        with:
+          install: false
+          command: npm run cy:run:exp:chrome
+
+      - name: Upload experimental artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-artifacts-experimental
+          path: |
+            cypress/results/**
+            cypress/screenshots/**
+            cypress/videos/**
+          if-no-files-found: ignore

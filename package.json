@@ -1,0 +1,27 @@
+{
+  "name": "welcome-to-the-internet-qa",
+  "version": "1.0.0",
+  "scripts": {
+    "cy:run": "cypress run",
+    "cy:run:exp": "cypress run --config-file cypress.config.experimental.ts",
+    "cy:run:exp:chrome": "cypress run --browser chrome --config-file cypress.config.experimental.ts",
+    "cy:run:exp:edge": "cypress run --browser edge --config-file cypress.config.experimental.ts",
+    "cy:run:exp:webkit": "cypress run --browser webkit --config-file cypress.config.experimental.ts",
+    "cy:open": "cypress open",
+    "cy:open:exp": "cypress open --config-file cypress.config.experimental.ts",
+    "typecheck": "tsc --noEmit",
+    "report:merge": "mochawesome-merge cypress/results/mochawesome*.json > cypress/results/output.json",
+    "report:generate": "marge cypress/results/output.json -f report -o cypress/results",
+    "report": "npm run report:merge && npm run report:generate"
+  },
+  "overrides": {
+    "diff": "^8.0.3"
+  },
+  "devDependencies": {
+    "cypress": "^15.11.0",
+    "typescript": "^5.0.0",
+    "mochawesome": "^7.1.4",
+    "mochawesome-merge": "^5.1.1",
+    "mochawesome-report-generator": "^6.3.2"
+  }
+}
